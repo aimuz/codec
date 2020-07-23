@@ -19,6 +19,7 @@ func NewSnappyCodec(codec codec.Codec) *snappyCodec {
 	}
 }
 
+// Marshal returns the wire format of v.
 func (m snappyCodec) Marshal(v interface{}) ([]byte, error) {
 	b, err := m.codec.Marshal(v)
 	if err != nil {
@@ -27,6 +28,7 @@ func (m snappyCodec) Marshal(v interface{}) ([]byte, error) {
 	return snappy.Encode(nil, b), nil
 }
 
+// Unmarshal parses the wire format into v.
 func (m snappyCodec) Unmarshal(b []byte, v interface{}) error {
 	var err error
 	b, err = snappy.Decode(nil, b)
@@ -36,6 +38,7 @@ func (m snappyCodec) Unmarshal(b []byte, v interface{}) error {
 	return m.codec.Unmarshal(b, v)
 }
 
+// Name return codec name
 func (m snappyCodec) Name() string {
 	return "snappy+" + m.codec.Name()
 }

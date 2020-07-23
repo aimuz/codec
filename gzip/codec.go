@@ -10,8 +10,8 @@ import (
 
 // Codec that encodes to and decodes from GZIP.
 type gzipCodec struct {
-	codec codec.Codec
 	level int
+	codec codec.Codec
 }
 
 var _ codec.Codec = new(gzipCodec)
@@ -22,6 +22,7 @@ func NewGzipCodec(coder codec.Codec) *gzipCodec {
 		codec: coder,
 	}
 }
+
 // NewGzipCodecLevel ...
 func NewGzipCodecLevel(coder codec.Codec, level int) *gzipCodec {
 	return &gzipCodec{
@@ -30,6 +31,7 @@ func NewGzipCodecLevel(coder codec.Codec, level int) *gzipCodec {
 	}
 }
 
+// Marshal returns the wire format of v.
 func (m gzipCodec) Marshal(v interface{}) ([]byte, error) {
 	b, err := m.codec.Marshal(v)
 	if err != nil {
@@ -52,6 +54,7 @@ func (m gzipCodec) Marshal(v interface{}) ([]byte, error) {
 	return w.Bytes(), nil
 }
 
+// Unmarshal parses the wire format into v.
 func (m gzipCodec) Unmarshal(b []byte, v interface{}) error {
 	var (
 		err error
@@ -69,6 +72,7 @@ func (m gzipCodec) Unmarshal(b []byte, v interface{}) error {
 	return m.codec.Unmarshal(b, v)
 }
 
+// Name return codec name
 func (m gzipCodec) Name() string {
 	return "gzip+" + m.codec.Name()
 }
