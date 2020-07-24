@@ -36,6 +36,6 @@ encoding.RegisterCodec(snappy.NewSnappyCodec(gob.Codec))
 - [x] json
 - [x] gob
 - [x] snappy
-- [ ] bson
+- [x] bson
 - [ ] protobuf
 - [ ] ....
