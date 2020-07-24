@@ -12,8 +12,8 @@ type snappyCodec struct {
 
 var _ codec.Codec = new(snappyCodec)
 
-// NewSnappyCodec ...
-func NewSnappyCodec(codec codec.Codec) *snappyCodec {
+// NewSnappyCodecWith ...
+func NewSnappyCodecWith(codec codec.Codec) codec.Codec {
 	return &snappyCodec{
 		codec: codec,
 	}

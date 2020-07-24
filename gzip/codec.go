@@ -16,15 +16,15 @@ type gzipCodec struct {
 
 var _ codec.Codec = new(gzipCodec)
 
-// NewGzipCodec ...
-func NewGzipCodec(coder codec.Codec) *gzipCodec {
+// NewGzipCodecWith ...
+func NewGzipCodecWith(coder codec.Codec) codec.Codec {
 	return &gzipCodec{
 		codec: coder,
 	}
 }
 
-// NewGzipCodecLevel ...
-func NewGzipCodecLevel(coder codec.Codec, level int) *gzipCodec {
+// NewGzipCodecLevelWith ...
+func NewGzipCodecLevelWith(coder codec.Codec, level int) codec.Codec {
 	return &gzipCodec{
 		codec: coder,
 		level: level,
