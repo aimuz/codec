@@ -38,20 +38,21 @@ func (m gzipCodec) Marshal(v interface{}) ([]byte, error) {
 		return nil, err
 	}
 	var w bytes.Buffer
+	var gw *gzip.Writer
 	if m.level > 0 {
-		var gw *gzip.Writer
 		gw, err = gzip.NewWriterLevel(&w, m.level)
 		if err != nil {
 			return nil, err
 		}
-		_, err = gw.Write(b)
 	} else {
-		_, err = gzip.NewWriter(&w).Write(b)
+		gw = gzip.NewWriter(&w)
 	}
+	_, err = gw.Write(b)
 	if err != nil {
 		return nil, err
 	}
-	return w.Bytes(), nil
+	err = gw.Flush()
+	return w.Bytes(), err
 }
 
 // Unmarshal parses the wire format into v.
