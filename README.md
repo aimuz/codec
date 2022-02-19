@@ -58,5 +58,5 @@ encoding.RegisterCodec(snappy.NewSnappyCodecWith(xml.Codec))
 - [x] snappy
 - [x] bson
 - [x] xml
-- [ ] protobuf
+- [x] protobuf
 - [ ] ....
