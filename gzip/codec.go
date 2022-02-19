@@ -8,39 +8,38 @@ import (
 	"github.com/aimuz/codec"
 )
 
-// Codec that encodes to and decodes from GZIP.
-type gzipCodec struct {
+type c struct {
 	level int
 	codec codec.Codec
 }
 
-var _ codec.Codec = new(gzipCodec)
+var _ codec.Codec = (*c)(nil)
 
 // NewGzipCodecWith ...
 func NewGzipCodecWith(coder codec.Codec) codec.Codec {
-	return &gzipCodec{
+	return &c{
 		codec: coder,
 	}
 }
 
 // NewGzipCodecLevelWith ...
 func NewGzipCodecLevelWith(coder codec.Codec, level int) codec.Codec {
-	return &gzipCodec{
+	return &c{
 		codec: coder,
 		level: level,
 	}
 }
 
 // Marshal returns the wire format of v.
-func (m gzipCodec) Marshal(v interface{}) ([]byte, error) {
-	b, err := m.codec.Marshal(v)
+func (c c) Marshal(v interface{}) ([]byte, error) {
+	b, err := c.codec.Marshal(v)
 	if err != nil {
 		return nil, err
 	}
 	var w bytes.Buffer
 	var gw *gzip.Writer
-	if m.level > 0 {
-		gw, err = gzip.NewWriterLevel(&w, m.level)
+	if c.level > 0 {
+		gw, err = gzip.NewWriterLevel(&w, c.level)
 		if err != nil {
 			return nil, err
 		}
@@ -56,7 +55,7 @@ func (m gzipCodec) Marshal(v interface{}) ([]byte, error) {
 }
 
 // Unmarshal parses the wire format into v.
-func (m gzipCodec) Unmarshal(b []byte, v interface{}) error {
+func (c c) Unmarshal(b []byte, v interface{}) error {
 	var (
 		err error
 		r   *gzip.Reader
@@ -70,10 +69,10 @@ func (m gzipCodec) Unmarshal(b []byte, v interface{}) error {
 	if err != nil {
 		return err
 	}
-	return m.codec.Unmarshal(b, v)
+	return c.codec.Unmarshal(b, v)
 }
 
 // Name return codec name
-func (m gzipCodec) Name() string {
-	return "gzip+" + m.codec.Name()
+func (c c) Name() string {
+	return "gzip+" + c.codec.Name()
 }

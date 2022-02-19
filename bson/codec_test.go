@@ -13,7 +13,7 @@ func Test_bsonCodec_Marshal(t *testing.T) {
 
 	tests := []struct {
 		name    string
-		c       bsonCodec
+		c       c
 		args    args
 		want    []byte
 		wantErr bool
@@ -129,7 +129,7 @@ func Test_bsonCodec_Marshal(t *testing.T) {
 func Test_bsonCodec_Name(t *testing.T) {
 	tests := []struct {
 		name string
-		c    bsonCodec
+		c    c
 		want string
 	}{
 		{
@@ -154,7 +154,7 @@ func Test_bsonCodec_Unmarshal(t *testing.T) {
 	}
 	tests := []struct {
 		name    string
-		c       bsonCodec
+		c       c
 		args    args
 		wantErr bool
 	}{

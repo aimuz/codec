@@ -6,22 +6,22 @@ import (
 )
 
 // Codec that encodes to and decodes from SNAPPY.
-type snappyCodec struct {
+type c struct {
 	codec codec.Codec
 }
 
-var _ codec.Codec = new(snappyCodec)
+var _ codec.Codec = (*c)(nil)
 
 // NewSnappyCodecWith ...
 func NewSnappyCodecWith(codec codec.Codec) codec.Codec {
-	return &snappyCodec{
+	return &c{
 		codec: codec,
 	}
 }
 
 // Marshal returns the wire format of v.
-func (m snappyCodec) Marshal(v interface{}) ([]byte, error) {
-	b, err := m.codec.Marshal(v)
+func (c c) Marshal(v interface{}) ([]byte, error) {
+	b, err := c.codec.Marshal(v)
 	if err != nil {
 		return nil, err
 	}
@@ -29,16 +29,16 @@ func (m snappyCodec) Marshal(v interface{}) ([]byte, error) {
 }
 
 // Unmarshal parses the wire format into v.
-func (m snappyCodec) Unmarshal(b []byte, v interface{}) error {
+func (c c) Unmarshal(b []byte, v interface{}) error {
 	var err error
 	b, err = snappy.Decode(nil, b)
 	if err != nil {
 		return err
 	}
-	return m.codec.Unmarshal(b, v)
+	return c.codec.Unmarshal(b, v)
 }
 
 // Name return codec name
-func (m snappyCodec) Name() string {
-	return "snappy+" + m.codec.Name()
+func (c c) Name() string {
+	return "snappy+" + c.codec.Name()
 }
